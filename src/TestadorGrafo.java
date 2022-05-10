@@ -1,47 +1,53 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TestadorGrafo {
     public static void main(String[] args) {
 
         GrafoLista grafo = new GrafoLista();
         grafo.setNumeroDeVertices(4);
-
-        Vertice vA = grafo.adicionarVertice("a");
-        Vertice vB = grafo.adicionarVertice("b");
-        Vertice vC = grafo.adicionarVertice("c");
-        Vertice vD = grafo.adicionarVertice("d");
-        Vertice vE = grafo.adicionarVertice("e");
-        Vertice vF = grafo.adicionarVertice("f");
-        Vertice vG = grafo.adicionarVertice("g");
-        Vertice vH = grafo.adicionarVertice("h");
-
-        grafo.adicionarAresta(vA, vC);
-        grafo.adicionarAresta(vC, vE);
-        grafo.adicionarAresta(vC, vB);
-        grafo.adicionarAresta(vC, vD);
-        grafo.adicionarAresta(vE, vG);
-        grafo.adicionarAresta(vE, vF);
-        grafo.adicionarAresta(vG, vE);
-        grafo.adicionarAresta(vG, vH);
-        grafo.adicionarAresta(vH, vG);
-        grafo.adicionarAresta(vH, vF);
-        grafo.adicionarAresta(vF, vE);
-        grafo.adicionarAresta(vF, vD);
-        grafo.adicionarAresta(vB, vA);
-        grafo.adicionarAresta(vB, vD);
-
-
         Kosaraju k = new Kosaraju(grafo);
 
-        for (Vertice i : k.getStack()) {
-            System.out.println(i.getDado());
+        Scanner sc = new Scanner(System.in);
+        int nroVertices = sc.nextInt();
+
+        for (int i = 0; i < nroVertices; i++) {
+            String linha = sc.nextLine();
+            String[] vertices = linha.split(":");
+            for (String item : vertices) {
+                System.out.println(item);
+            }
         }
 
-        // ArrayList<GrafoLista> cFC = k.getComponentesFortementeConectados();
-        // for (GrafoLista g : cFC) {
-        //     g.imprimirGrafoLista();
-        //     System.out.println("aqui");
-        // }
-    }
+//        Vertice vA = grafo.criarVertice("a");
+//        Vertice vB = grafo.criarVertice("b");
+//        Vertice vC = grafo.criarVertice("c");
+//        Vertice vD = grafo.criarVertice("d");
+//        Vertice vE = grafo.criarVertice("e");
+//        Vertice vF = grafo.criarVertice("f");
+//        Vertice vG = grafo.criarVertice("g");
+//        Vertice vH = grafo.criarVertice("h");
+//
+//        grafo.adicionarAresta(vA, vC);
+//        grafo.adicionarAresta(vC, vE);
+//        grafo.adicionarAresta(vC, vB);
+//        grafo.adicionarAresta(vC, vD);
+//        grafo.adicionarAresta(vD, vF);
+//        grafo.adicionarAresta(vE, vG);
+//        grafo.adicionarAresta(vE, vF);
+//        grafo.adicionarAresta(vG, vE);
+//        grafo.adicionarAresta(vG, vH);
+//        grafo.adicionarAresta(vH, vG);
+//        grafo.adicionarAresta(vH, vF);
+//        grafo.adicionarAresta(vF, vD);
+//        grafo.adicionarAresta(vB, vA);
+//        grafo.adicionarAresta(vB, vD);
 
+        ArrayList<GrafoLista> cFC = k.getComponentesFortementeConectados();
+        for (GrafoLista g : cFC) {
+            g.imprimirGrafoLista();
+            System.out.println("aqui");
+        }
+
+    }
 }

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class GrafoLista {
     private int numeroDeVertices;
@@ -10,7 +9,7 @@ public class GrafoLista {
         this.vertices = new ArrayList<>();
     }
 
-    public Vertice adicionarVertice(String dado) {
+    public Vertice criarVertice(String dado) {
         Vertice novoVertice = new Vertice(dado);
         this.vertices.add(novoVertice);
 
@@ -37,19 +36,15 @@ public class GrafoLista {
         this.vertices = vertices;
     }
 
+
     public void adicionarAresta(Vertice vInicial, Vertice vFinal) {
-        vInicial.adicionarAdjacencia(vFinal);
-    }
-
-    public boolean ehFortementeConexo() {
-        return true;
-    }
-
-    public int numeroComponentesFortementeConectados() {
-        return 0;
-    }
-
-    public void imprimirOrdenacaoTopologica() {
+        //adicionar o proprio vertice na adjacencia, e nao outro
+        for (Vertice v : this.vertices) {
+            if (v.getDado().equals(vFinal.getDado())) {
+                vInicial.adicionarAdjacencia(v);
+                break;
+            }
+        }
 
     }
 
