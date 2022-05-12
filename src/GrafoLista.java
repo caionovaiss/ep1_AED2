@@ -9,7 +9,7 @@ public class GrafoLista {
         this.vertices = new ArrayList<>();
     }
 
-    public Vertice criarVertice(String dado) {
+    public Vertice criarEAdicionarVertice(String dado) {
         Vertice novoVertice = new Vertice(dado);
         this.vertices.add(novoVertice);
 

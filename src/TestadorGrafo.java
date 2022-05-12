@@ -5,49 +5,45 @@ public class TestadorGrafo {
     public static void main(String[] args) {
 
         GrafoLista grafo = new GrafoLista();
-        grafo.setNumeroDeVertices(4);
         Kosaraju k = new Kosaraju(grafo);
 
         Scanner sc = new Scanner(System.in);
         int nroVertices = sc.nextInt();
+        sc.nextLine();
 
-        for (int i = 0; i < nroVertices; i++) {
-            String linha = sc.nextLine();
-            String[] vertices = linha.split(":");
-            for (String item : vertices) {
-                System.out.println(item);
-            }
-        }
+        PegarEntrada gI = new PegarEntrada();
 
-//        Vertice vA = grafo.criarVertice("a");
-//        Vertice vB = grafo.criarVertice("b");
-//        Vertice vC = grafo.criarVertice("c");
-//        Vertice vD = grafo.criarVertice("d");
-//        Vertice vE = grafo.criarVertice("e");
-//        Vertice vF = grafo.criarVertice("f");
-//        Vertice vG = grafo.criarVertice("g");
-//        Vertice vH = grafo.criarVertice("h");
-//
-//        grafo.adicionarAresta(vA, vC);
-//        grafo.adicionarAresta(vC, vE);
-//        grafo.adicionarAresta(vC, vB);
-//        grafo.adicionarAresta(vC, vD);
-//        grafo.adicionarAresta(vD, vF);
-//        grafo.adicionarAresta(vE, vG);
-//        grafo.adicionarAresta(vE, vF);
-//        grafo.adicionarAresta(vG, vE);
-//        grafo.adicionarAresta(vG, vH);
-//        grafo.adicionarAresta(vH, vG);
-//        grafo.adicionarAresta(vH, vF);
-//        grafo.adicionarAresta(vF, vD);
-//        grafo.adicionarAresta(vB, vA);
-//        grafo.adicionarAresta(vB, vD);
+        gI.getEntrada(nroVertices, sc, grafo);
+
+        grafo.setNumeroDeVertices(nroVertices);
+        //grafo.imprimirGrafoLista();
 
         ArrayList<GrafoLista> cFC = k.getComponentesFortementeConectados();
-        for (GrafoLista g : cFC) {
-            g.imprimirGrafoLista();
-            System.out.println("aqui");
-        }
+//        for (GrafoLista g : cFC) {
+//            System.out.println("---");
+//            g.imprimirGrafoLista();
+//        }
 
+        if (cFC.size() > 1) {
+            System.out.println("Nao");
+            System.out.println(cFC.size());
+        } else {
+            System.out.println("Sim");
+            System.out.println(cFC.size());
+        }
     }
 }
+        /*
+        if (grafo.getVertices().get(0).getAdjacencias().get(1).equals(grafo.getVertices().get(2))) {
+            System.out.println("sao iguais");
+            System.out.println(grafo.getVertices().get(0).getAdjacencias().get(1).getDado());
+            System.out.println(grafo.getVertices().get(2).getDado());
+            System.out.println("iguais ----");
+        } else {
+            System.out.println("nao sao iguais");
+            System.out.println(grafo.getVertices().get(0).getAdjacencias().get(1).getDado());
+            System.out.println(grafo.getVertices().get(2).getDado());
+            System.out.println("diferentes ----");
+        }
+
+         */

@@ -79,7 +79,7 @@ public class Kosaraju {
             Vertice novoV = getVertice(v.getDado());
 
             if (gInvertido.getVertices().isEmpty()) {
-                novoV = gInvertido.criarVertice(v.getDado());
+                novoV = gInvertido.criarEAdicionarVertice(v.getDado());
             } else {
                 boolean achou = false;
                 for (Vertice i : gInvertido.getVertices()) {
@@ -90,7 +90,7 @@ public class Kosaraju {
                     }
                 }
                 if (!achou)
-                    novoV = gInvertido.criarVertice(v.getDado());
+                    novoV = gInvertido.criarEAdicionarVertice(v.getDado());
             }
 
             for (Vertice adj : v.getAdjacencias()) {
@@ -107,7 +107,7 @@ public class Kosaraju {
                     Vertice novaAdj = new Vertice(adj.getDado());
                     boolean achou = false;
                     if (gInvertido.getVertices().isEmpty())
-                        novaAdj = gInvertido.criarVertice(adj.getDado());
+                        novaAdj = gInvertido.criarEAdicionarVertice(adj.getDado());
                     else {
                         for (Vertice k : gInvertido.getVertices()) {
                             if (k.getDado().equals(adj.getDado())) {
@@ -117,7 +117,7 @@ public class Kosaraju {
                             }
                         }
                         if (!achou)
-                            novaAdj = gInvertido.criarVertice(adj.getDado());
+                            novaAdj = gInvertido.criarEAdicionarVertice(adj.getDado());
                     }
 
                     gInvertido.adicionarAresta(novaAdj, novoV);
