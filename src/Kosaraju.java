@@ -4,14 +4,16 @@ import java.util.Stack;
 public class Kosaraju {
     private ArrayList<Vertice> vertices;
     private Stack<Vertice> stack;
+    private Stack<Vertice> stackCFC;
     private GrafoLista grafo;
     private GrafoLista fortementeConectados;
 
     public Kosaraju(GrafoLista grafo) {
-        this.stack = new Stack<Vertice>();
+        this.stack = new Stack<>();
         this.grafo = grafo;
         this.vertices = grafo.getVertices();
         this.fortementeConectados = new GrafoLista();
+        this.stackCFC = new Stack<>();
     }
 
     public void dfs(Vertice v) {
@@ -58,6 +60,29 @@ public class Kosaraju {
 
         v = getVertice(v.getDado());
         v.setCor(Vertice.Color.BLACK);
+    }
+
+    public GrafoLista dfs3(GrafoLista g) {
+        for (Vertice v : g.getVertices()) {
+            if (v.getCor().equals(Vertice.Color.WHITE)) {
+                dfsVisit3(v);
+            }
+        }
+
+        return g;
+    }
+
+    public void dfsVisit3(Vertice v) {
+        v.setCor(Vertice.Color.GRAY);
+
+        for (Vertice adj : v.getAdjacencias()) {
+            if (adj.getCor().equals(Vertice.Color.WHITE)) {
+                dfsVisit3(adj);
+            }
+        }
+
+        v.setCor(Vertice.Color.BLACK);
+        this.stackCFC.add(v);
     }
 
     public Vertice getVertice(String dado) {
@@ -144,6 +169,81 @@ public class Kosaraju {
         return this.vertices = stackLista;
     }
 
+    public GrafoLista getComponentesFortementeConectados() {
+
+        //chamando dfs para o grafo original
+        for (Vertice v : this.grafo.getVertices()) {
+            dfs(v);
+        }
+
+        GrafoLista gInvertido = getTransposta(this.grafo);
+        for (Vertice v : gInvertido.getVertices()) {
+            v.setCor(Vertice.Color.WHITE);
+        }
+        gInvertido.setVertices(stackNew(gInvertido.getVertices()));
+
+        GrafoLista grafoFc = new GrafoLista();
+        ArrayList<GrafoLista> cFC = new ArrayList<>();
+        //chamando o segundo dfs para o grafo invertido
+        for (Vertice v : gInvertido.getVertices()) {
+            dfs2(v);
+            String componente = "";
+            GrafoLista gTemp = new GrafoLista();
+            for (Vertice j : gInvertido.getVertices()) {
+                if (j.getCor().equals(Vertice.Color.BLACK)) {
+                    componente += j.getDado();
+                    j.setCor(Vertice.Color.GRAY);
+                    gTemp.addVertice(j);
+                }
+            }
+            if (!gTemp.getVertices().isEmpty()) {
+                grafoFc.criarEAdicionarVertice(componente);
+                cFC.add(gTemp);
+            }
+        }
+
+        if (cFC.size() > 1) {
+            System.out.println("Não");
+            System.out.println(cFC.size());
+        } else {
+            System.out.println("Sim");
+            System.out.println(cFC.size());
+        }
+
+        for (Vertice comp : grafoFc.getVertices()) {
+            for (Vertice v : this.grafo.getVertices()) {
+                if (comp.getDado().contains(v.getDado())) {
+                    for (Vertice adj : v.getAdjacencias()) {
+                        //nao esta no mesmo componente
+                        if (!comp.getDado().contains(adj.getDado())) {
+                            for (Vertice c : grafoFc.getVertices()) {
+                                if (c.getDado().contains(adj.getDado())) {
+                                    if (!comp.getAdjacencias().contains(c))
+                                        grafoFc.adicionarAresta(comp, c);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Vertice comp : grafoFc.getVertices())
+            comp.setCor(Vertice.Color.WHITE);
+
+        dfs3(grafoFc);
+
+        while (!this.stackCFC.isEmpty())
+            System.out.print(this.stackCFC.pop().getDado() + " ");
+
+        System.out.println();
+
+        return grafoFc;
+    }
+
+    public void ordenacaoTopologica() {
+    }
+
     public void printarVEAdj(GrafoLista g) {
         Vertice test = new Vertice("xota");
         Vertice test2 = new Vertice("xota");
@@ -174,36 +274,6 @@ public class Kosaraju {
             System.out.println("diferente e o dado1 eh: " + test.getDado() + " e dado 2: " + test2.getDado());
     }
 
-    public ArrayList<GrafoLista> getComponentesFortementeConectados() {
-
-        //chamando dfs para o grafo original
-        for (Vertice v : this.grafo.getVertices()) {
-            dfs(v);
-        }
-
-        GrafoLista gInvertido = getTransposta(this.grafo);
-        for (Vertice v : gInvertido.getVertices()) {
-            v.setCor(Vertice.Color.WHITE);
-        }
-        gInvertido.setVertices(stackNew(gInvertido.getVertices()));
-
-        ArrayList<GrafoLista> cFC = new ArrayList<>();
-        //chamando o segundo dfs para o grafo invertido
-        for (Vertice v : gInvertido.getVertices()) {
-            dfs2(v);
-            GrafoLista gTemp = new GrafoLista();
-            for (Vertice j : gInvertido.getVertices()) {
-                if (j.getCor().equals(Vertice.Color.BLACK)) {
-                    gTemp.addVertice(j);
-                    j.setCor(Vertice.Color.GRAY);
-                }
-            }
-            if (!gTemp.getVertices().isEmpty())
-                cFC.add(gTemp);
-        }
-
-        return cFC;
-    }
 
     public Stack<Vertice> getStack() {
         return stack;

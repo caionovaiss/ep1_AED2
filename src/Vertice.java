@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Vertice {
@@ -38,6 +37,14 @@ public class Vertice {
 
     public void adicionarAdjacencia(Vertice v) {
         this.adjacencias.add(v);
+    }
+
+    public void removerAdjacencia(Vertice adj) {
+        if (this.adjacencias.contains(adj)) {
+            this.adjacencias.remove(adj);
+            System.out.println("adjacencia removida com sucesso");
+        } else
+            System.out.println("essa adjacencia nao existe");
     }
 
     public int getNumeroAdjacencias() {
