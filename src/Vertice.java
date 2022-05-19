@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 
+/*
+Classe vertice que tem o conteudo dentro dele - dado, e suas adjacencias - outros vertices
+ */
 public class Vertice {
-    private String dado;
-    private ArrayList<Vertice> adjacencias;
-
+    private final String dado;
+    private final ArrayList<Vertice> adjacencias;
+    private int posicao;
 
     public enum Color {
         WHITE,
@@ -23,10 +26,6 @@ public class Vertice {
         return dado;
     }
 
-    public void setDado(String dado) {
-        this.dado = dado;
-    }
-
     public void setCor(Color cor) {
         this.cor = cor;
     }
@@ -35,25 +34,22 @@ public class Vertice {
         return this.cor;
     }
 
+    public void setPosicao(int posicao) {
+        this.posicao = posicao;
+    }
+
+    public int getPosicao() {
+        return this.posicao;
+    }
+
+    /*
+        Adicionar uma adjacencia ao vertice em questão
+         */
     public void adicionarAdjacencia(Vertice v) {
         this.adjacencias.add(v);
     }
 
-    public void removerAdjacencia(Vertice adj) {
-        if (this.adjacencias.contains(adj)) {
-            this.adjacencias.remove(adj);
-            System.out.println("adjacencia removida com sucesso");
-        } else
-            System.out.println("essa adjacencia nao existe");
-    }
-
-    public int getNumeroAdjacencias() {
-        return adjacencias.size();
-    }
-
-
     public ArrayList<Vertice> getAdjacencias() {
         return this.adjacencias;
     }
-
 }

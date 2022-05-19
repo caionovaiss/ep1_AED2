@@ -1,5 +1,8 @@
 import java.util.Scanner;
 
+/*
+Classe que pega a entrada e transforma em um grafo lista
+ */
 public class PegarEntrada {
 
     public PegarEntrada() {
