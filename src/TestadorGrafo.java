@@ -15,13 +15,12 @@ public class TestadorGrafo {
         gI.getEntrada();
 
         int representacao = sc.nextInt();
-        KosarajuMatriz kM = new KosarajuMatriz(gM);
-        kM.executarSaida();
 
         if (representacao == 1) {
-
+            k.executarSaida();
         } else {
-
+            KosarajuMatriz kM = new KosarajuMatriz(gM);
+            kM.executarSaida();
         }
     }
 }

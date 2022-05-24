@@ -50,6 +50,22 @@ public class GrafoMatriz {
         return v;
     }
 
+    public ArrayList<Integer> pegarAdjacencias(Vertice v) {
+        ArrayList<Integer> adjs = new ArrayList<>();
+
+        for (Vertice x : getVertices()) {
+            if (x == v) {
+                for (int i = 0; i < getMaximoVertices(); i++) {
+                    if (getMatriz()[x.getPosicao()][i] == 1) {
+                        adjs.add(i);
+                    }
+                }
+                break;
+            }
+        }
+        return adjs;
+    }
+
     public void addAresta(Vertice ini, Vertice fim) {
         for (int l = 0; l < getMaximoVertices(); l++) {
             if (ini.getPosicao() == l) {
