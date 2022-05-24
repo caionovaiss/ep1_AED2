@@ -6,25 +6,22 @@ public class TestadorGrafo {
         GrafoLista gLista = new GrafoLista();
         Kosaraju k = new Kosaraju(gLista);
 
+        //pegar entrada
         Scanner sc = new Scanner(System.in);
         int nroVertices = sc.nextInt();
         sc.nextLine();
-
-        PegarEntrada gI = new PegarEntrada();
-        gI.getEntrada(nroVertices, sc, gLista);
-        gLista.setNumeroDeVertices(nroVertices);
-        gLista.atribuirPosicao();
-
-        //formato matriz
+        GrafoMatriz gM = new GrafoMatriz(nroVertices);
+        PegarEntrada gI = new PegarEntrada(nroVertices, sc, gLista, gM);
+        gI.getEntrada();
 
         int representacao = sc.nextInt();
-        if (representacao == 1)
-            k.executarSaida();
-        else {
-            GrafoLista grafoFc = k.executarSaidaMatriz();
-            grafoFc.atribuirPosicao();
-            GrafoMatriz grafoMatriz = new GrafoMatriz(grafoFc.getNumeroDeVertices(), grafoFc);
-            grafoMatriz.imprimirMatriz();
+        KosarajuMatriz kM = new KosarajuMatriz(gM);
+        kM.executarSaida();
+
+        if (representacao == 1) {
+
+        } else {
+
         }
     }
 }

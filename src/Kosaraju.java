@@ -18,9 +18,8 @@ public class Kosaraju {
 
     /* Primeiro Dfs utilizado */
     public void dfs(Vertice v) {
-        if (v.getCor().equals(Vertice.Color.WHITE)) {
+        if (v.getCor().equals(Vertice.Color.WHITE))
             dfsVisit(v);
-        }
     }
 
     /* funcao que o Dfs utiliza. Serve para construir uma pilha  */
@@ -38,7 +37,6 @@ public class Kosaraju {
         novoV.setCor(v.getCor());
         stack.add(novoV);
     }
-
 
     /* dfs utilizado para o grafo invertido, com as arestas trocadas */
     public void dfsGrafoInvertido(Vertice v) {
@@ -185,40 +183,6 @@ public class Kosaraju {
         return this.vertices = stackLista;
     }
 
-    public void ehGrafoFortementeConexo(ArrayList<GrafoLista> cFC) {
-        if (cFC.size() != 1) {
-            System.out.println("Não");
-            System.out.println(cFC.size());
-        } else {
-            System.out.println("Sim");
-            System.out.println(cFC.size());
-        }
-    }
-
-    public void adicionarAdjacenciasGrafoFC(GrafoLista grafoFc) {
-        //todos devem  ser brancos
-        for (Vertice comp : grafoFc.getVertices())
-            comp.setCor(Vertice.Color.WHITE);
-
-        for (Vertice comp : grafoFc.getVertices()) {
-            for (Vertice v : this.grafo.getVertices()) {
-                if (comp.getDado().contains(v.getDado())) {
-                    for (Vertice adj : v.getAdjacencias()) {
-                        //nao esta no mesmo componente
-                        if (!comp.getDado().contains(adj.getDado())) {
-                            for (Vertice c : grafoFc.getVertices()) {
-                                if (c.getDado().contains(adj.getDado())) {
-                                    if (!comp.getAdjacencias().contains(c))
-                                        grafoFc.adicionarAresta(comp, c);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public GrafoLista getComponentesFortementeConectados() {
         //chamando dfs para o grafo original
         for (Vertice v : this.grafo.getVertices()) {
@@ -256,6 +220,42 @@ public class Kosaraju {
         return grafoFc;
     }
 
+
+    public void ehGrafoFortementeConexo(ArrayList<GrafoLista> cFC) {
+        if (cFC.size() != 1) {
+            System.out.println("Não");
+            System.out.println(cFC.size());
+        } else {
+            System.out.println("Sim");
+            System.out.println(cFC.size());
+        }
+    }
+
+    public void adicionarAdjacenciasGrafoFC(GrafoLista grafoFc) {
+        //todos devem  ser brancos
+        for (Vertice comp : grafoFc.getVertices())
+            comp.setCor(Vertice.Color.WHITE);
+
+        for (Vertice comp : grafoFc.getVertices()) {
+            for (Vertice v : this.grafo.getVertices()) {
+                if (comp.getDado().contains(v.getDado())) {
+                    for (Vertice adj : v.getAdjacencias()) {
+                        //nao esta no mesmo componente
+                        if (!comp.getDado().contains(adj.getDado())) {
+                            for (Vertice c : grafoFc.getVertices()) {
+                                if (c.getDado().contains(adj.getDado())) {
+                                    if (!comp.getAdjacencias().contains(c))
+                                        grafoFc.adicionarAresta(comp, c);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     public void printarOrdemTopologica() {
         while (!this.stackCFC.isEmpty())
             System.out.print(this.stackCFC.pop().getDado() + " ");
@@ -272,13 +272,4 @@ public class Kosaraju {
         grafoFc.imprimirGrafoLista();
     }
 
-    public GrafoLista executarSaidaMatriz() {
-        GrafoLista grafoFc = getComponentesFortementeConectados();
-        ehGrafoFortementeConexo(this.fortementeConectados);
-        adicionarAdjacenciasGrafoFC(grafoFc);
-        dfsOrdemTopologica(grafoFc);
-
-        printarOrdemTopologica();
-        return grafoFc;
-    }
 }

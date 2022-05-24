@@ -42,14 +42,12 @@ public class Vertice {
         return this.posicao;
     }
 
-    /*
-        Adicionar uma adjacencia ao vertice em questão
-         */
+    public ArrayList<Vertice> getAdjacencias() {
+        return this.adjacencias;
+    }
+
     public void adicionarAdjacencia(Vertice v) {
         this.adjacencias.add(v);
     }
 
-    public ArrayList<Vertice> getAdjacencias() {
-        return this.adjacencias;
-    }
 }

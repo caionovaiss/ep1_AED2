@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 
-/*
-Classe grafo em forma de lista. Essa classe contém o numero de vertices de um grafo, e uma lista com esses vertices
- */
 public class GrafoLista {
     private int numeroDeVertices;
     private ArrayList<Vertice> vertices;
@@ -43,23 +40,7 @@ public class GrafoLista {
     Classe que adiciona aresta, ou seja, adiciona o vertice adjancente em um vertice
      */
     public void adicionarAresta(Vertice vInicial, Vertice vFinal) {
-        //adicionar o proprio vertice na adjacencia, e nao outro
-        for (Vertice v : this.vertices) {
-            if (v.getDado().equals(vFinal.getDado())) {
-                vInicial.adicionarAdjacencia(v);
-                break;
-            }
-        }
-
-    }
-
-    public void atribuirPosicao() {
-        int i = 0;
-
-        for (Vertice v : getVertices()) {
-            v.setPosicao(i);
-            i++;
-        }
+        vInicial.adicionarAdjacencia(vFinal);
     }
 
     public void imprimirGrafoLista() {

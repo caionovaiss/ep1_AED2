@@ -3,11 +3,11 @@ import java.util.ArrayList;
 public class GrafoMatriz {
     private final int maximoVertices;
     private int matriz[][];
-    private GrafoLista gLista;
+    private ArrayList<Vertice> vertices;
 
-    public GrafoMatriz(int nroVertices, GrafoLista gLista) {
-        this.gLista = gLista;
+    public GrafoMatriz(int nroVertices) {
         this.maximoVertices = nroVertices;
+        this.vertices = new ArrayList<>();
 
         matriz = new int[maximoVertices][maximoVertices];
 
@@ -18,39 +18,68 @@ public class GrafoMatriz {
         }
     }
 
+    //getters and setters
     public int getMaximoVertices() {
-        return this.maximoVertices;
+        return maximoVertices;
     }
 
-    public GrafoLista getgLista() {
-        return this.gLista;
+    public int[][] getMatriz() {
+        return matriz;
     }
 
-    public void adicionarAdjacencias() {
-        for (int v = 0; v < getMaximoVertices(); v++) {
-            Vertice temp = getgLista().getVertices().get(v);
-            for (int u = 0; u < getMaximoVertices(); u++) {
-                for (Vertice adj : temp.getAdjacencias()) {
-                    this.matriz[v][adj.getPosicao()] = 1;
+    public void setMatriz(int[][] matriz) {
+        this.matriz = matriz;
+    }
+
+    public ArrayList<Vertice> getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(ArrayList<Vertice> vertices) {
+        this.vertices = vertices;
+    }
+
+    public Vertice criarEAdicionarVertice(String dado) {
+        int i = 0;
+        while (i < this.vertices.size()) {
+            i++;
+        }
+        Vertice v = new Vertice(dado);
+        v.setPosicao(i);
+        this.vertices.add(v);
+        return v;
+    }
+
+    public void addAresta(Vertice ini, Vertice fim) {
+        for (int l = 0; l < getMaximoVertices(); l++) {
+            if (ini.getPosicao() == l) {
+                for (int c = 0; c < getMaximoVertices(); c++) {
+                    if (fim.getPosicao() == c) {
+                        this.matriz[l][c] = 1;
+                        break;
+                    }
                 }
+                break;
             }
         }
     }
 
-    public void imprimirMatriz() {
-        adicionarAdjacencias();
-        System.out.print("    ");
-        for (int i = 0; i < getMaximoVertices(); i++) {
-            System.out.printf("  " + getgLista().getVertices().get(i).getDado());
+    public void imprimirGMatriz() {
+        System.out.print("  ");
+        for (Vertice v : getVertices()) {
+            System.out.print(v.getDado());
+            System.out.print(" ");
         }
         System.out.println();
-        for (int i = 0; i < getMaximoVertices(); i++) {
-            System.out.printf(getgLista().getVertices().get(i).getDado());
-            for (int j = 0; j < getMaximoVertices(); j++) {
-                System.out.printf(" %3d", matriz[i][j]);
+        for (int l = 0; l < getMaximoVertices(); l++) {
+            System.out.print(this.vertices.get(l).getDado() + " ");
+
+            for (int c = 0; c < getMaximoVertices(); c++) {
+                System.out.print(this.matriz[l][c] + " ");
             }
             System.out.println();
         }
     }
+
 
 }
