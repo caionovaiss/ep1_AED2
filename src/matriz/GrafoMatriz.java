@@ -1,3 +1,7 @@
+package matriz;
+
+import itens.Vertice;
+
 import java.util.ArrayList;
 
 public class GrafoMatriz {
@@ -27,27 +31,12 @@ public class GrafoMatriz {
         return matriz;
     }
 
-    public void setMatriz(int[][] matriz) {
-        this.matriz = matriz;
-    }
-
     public ArrayList<Vertice> getVertices() {
         return vertices;
     }
 
     public void setVertices(ArrayList<Vertice> vertices) {
         this.vertices = vertices;
-    }
-
-    public Vertice criarEAdicionarVertice(String dado) {
-        int i = 0;
-        while (i < this.vertices.size()) {
-            i++;
-        }
-        Vertice v = new Vertice(dado);
-        v.setPosicao(i);
-        this.vertices.add(v);
-        return v;
     }
 
     public ArrayList<Integer> pegarAdjacencias(Vertice v) {
@@ -83,6 +72,7 @@ public class GrafoMatriz {
     public void imprimirGMatriz() {
         System.out.print("  ");
         for (Vertice v : getVertices()) {
+            System.out.print(" ");
             System.out.print(v.getDado());
             System.out.print(" ");
         }
@@ -91,7 +81,7 @@ public class GrafoMatriz {
             System.out.print(this.vertices.get(l).getDado() + " ");
 
             for (int c = 0; c < getMaximoVertices(); c++) {
-                System.out.print(this.matriz[l][c] + " ");
+                System.out.print(" " + this.matriz[l][c] + " ");
             }
             System.out.println();
         }

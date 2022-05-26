@@ -1,3 +1,7 @@
+package lista;
+
+import itens.Vertice;
+
 import java.util.ArrayList;
 
 public class GrafoLista {

@@ -1,10 +1,15 @@
+import lista.GrafoLista;
+import lista.KosarajuLista;
+import matriz.GrafoMatriz;
+import matriz.KosarajuMatriz;
+
 import java.util.Scanner;
 
 public class TestadorGrafo {
     public static void main(String[] args) {
 
         GrafoLista gLista = new GrafoLista();
-        Kosaraju k = new Kosaraju(gLista);
+        KosarajuLista k = new KosarajuLista(gLista);
 
         //pegar entrada
         Scanner sc = new Scanner(System.in);

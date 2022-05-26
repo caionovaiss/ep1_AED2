@@ -1,3 +1,7 @@
+import lista.GrafoLista;
+import matriz.GrafoMatriz;
+import itens.Vertice;
+
 import java.util.Scanner;
 
 /*
@@ -20,32 +24,16 @@ public class PegarEntrada {
         return numeroVertices;
     }
 
-    public void setNumeroVertices(int numeroVertices) {
-        this.numeroVertices = numeroVertices;
-    }
-
     public Scanner getSc() {
         return sc;
-    }
-
-    public void setSc(Scanner sc) {
-        this.sc = sc;
     }
 
     public GrafoLista getgL() {
         return gL;
     }
 
-    public void setgL(GrafoLista gL) {
-        this.gL = gL;
-    }
-
     public GrafoMatriz getgM() {
         return gM;
-    }
-
-    public void setgM(GrafoMatriz gM) {
-        this.gM = gM;
     }
 
     public void getEntrada() {

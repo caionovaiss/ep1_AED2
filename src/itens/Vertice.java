@@ -1,3 +1,5 @@
+package itens;
+
 import java.util.ArrayList;
 
 /*
@@ -18,7 +20,7 @@ public class Vertice {
 
     public Vertice(String dado) {
         this.dado = dado;
-        this.adjacencias = new ArrayList<Vertice>();
+        this.adjacencias = new ArrayList<>();
         this.cor = Color.WHITE;
     }
 

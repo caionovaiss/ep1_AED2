@@ -1,34 +1,24 @@
+package matriz;
+
+import itens.Vertice;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class KosarajuMatriz {
 
     private final GrafoMatriz grafo;
-    private GrafoMatriz grafoInvertido;
     private final Stack<Vertice> stack;
     private final Stack<Vertice> stackCFC;
 
-    public GrafoMatriz getGrafoInvertido() {
-        return grafoInvertido;
-    }
-
-    public void setGrafoInvertido(GrafoMatriz grafoInvertido) {
-        this.grafoInvertido = grafoInvertido;
-    }
-
     public KosarajuMatriz(GrafoMatriz grafo) {
         this.grafo = grafo;
-        this.grafoInvertido = new GrafoMatriz(0);
         this.stack = new Stack<>();
         this.stackCFC = new Stack<>();
     }
 
     public GrafoMatriz getGrafo() {
         return grafo;
-    }
-
-    public Stack<Vertice> getStack() {
-        return this.stack;
     }
 
     public void dfs(Vertice v) {
@@ -52,21 +42,21 @@ public class KosarajuMatriz {
         this.stack.add(v);
     }
 
-    public void dfsGI(Vertice v) {
-        for (int i = 0; i < grafoInvertido.getMaximoVertices(); i++) {
+    public void dfsGI(Vertice v, GrafoMatriz gI) {
+        for (int i = 0; i < gI.getMaximoVertices(); i++) {
             if (v.getCor().equals(Vertice.Color.WHITE))
-                dfsVisitGI(v);
+                dfsVisitGI(v, gI);
         }
     }
 
-    private void dfsVisitGI(Vertice v) {
+    private void dfsVisitGI(Vertice v, GrafoMatriz gI) {
         v.setCor(Vertice.Color.GRAY);
 
-        for (int i = 0; i < getGrafoInvertido().getMaximoVertices(); i++) {
-            if (getGrafoInvertido().getMatriz()[v.getPosicao()][i] == 1) {
-                Vertice adj = getGrafoInvertido().getVertices().get(i);
+        for (int i = 0; i < gI.getMaximoVertices(); i++) {
+            if (gI.getMatriz()[v.getPosicao()][i] == 1) {
+                Vertice adj = gI.getVertices().get(i);
                 if (adj.getCor() == Vertice.Color.WHITE) {
-                    dfsVisitGI(adj);
+                    dfsVisitGI(adj, gI);
                 }
             }
         }
@@ -124,7 +114,7 @@ public class KosarajuMatriz {
             Vertice p = stack.pop();
             for (Vertice v : gInvertido.getVertices()) {
                 if (p.getDado().equals(v.getDado())) {
-                    dfsGI(v);
+                    dfsGI(v, gInvertido);
                     StringBuilder componente = new StringBuilder();
 
                     for (Vertice j : gInvertido.getVertices()) {
@@ -185,7 +175,6 @@ public class KosarajuMatriz {
     public void printarOrdemTopologica() {
         while (!this.stackCFC.isEmpty())
             System.out.print(this.stackCFC.pop().getDado() + " ");
-        System.out.println();
     }
 
     public void executarSaida() {
@@ -194,15 +183,14 @@ public class KosarajuMatriz {
         }
         GrafoMatriz gI = getTransposta();
 
-        this.grafoInvertido = gI;
-
         GrafoMatriz matrizFc = getCFC(gI);
         addAdjacenciasGrafoFc(matrizFc);
         ehGrafoFortementeConexo(matrizFc);
 
         dfsOT(matrizFc);
         printarOrdemTopologica();
-
+        System.out.println();
+        System.out.println();
         matrizFc.imprimirGMatriz();
 
     }

@@ -1,18 +1,20 @@
+package lista;
+
+import itens.Vertice;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Kosaraju {
+public class KosarajuLista {
+    private final GrafoLista grafo;
     private ArrayList<Vertice> vertices;
     private final Stack<Vertice> stack;
     private final Stack<Vertice> stackCFC;
-    private final GrafoLista grafo;
-    private ArrayList<GrafoLista> fortementeConectados;
 
-    public Kosaraju(GrafoLista grafo) {
+    public KosarajuLista(GrafoLista grafo) {
         this.stack = new Stack<>();
         this.grafo = grafo;
         this.vertices = grafo.getVertices();
-        this.fortementeConectados = new ArrayList<>();
         this.stackCFC = new Stack<>();
     }
 
@@ -39,14 +41,14 @@ public class Kosaraju {
     }
 
     /* dfs utilizado para o grafo invertido, com as arestas trocadas */
-    public void dfsGrafoInvertido(Vertice v) {
+    public void dfsGI(Vertice v) {
         if (v.getCor().equals(Vertice.Color.WHITE)) {
-            dfsVisitGrafoInvertido(v);
+            dfsVisitGI(v);
         }
     }
 
     /* dfs de visita utilizado pelo dfs que eh aplicado no grafo invertido */
-    public void dfsVisitGrafoInvertido(Vertice v) {
+    public void dfsVisitGI(Vertice v) {
         v = getVertice(v.getDado());
         v.setCor(Vertice.Color.GRAY);
 
@@ -55,7 +57,7 @@ public class Kosaraju {
             for (Vertice j : this.vertices) {
                 if (adj.getDado().equals(j.getDado())) {
                     if (j.getCor().equals(Vertice.Color.WHITE)) {
-                        dfsVisitGrafoInvertido(j);
+                        dfsVisitGI(j);
                     }
                 }
             }
@@ -66,21 +68,21 @@ public class Kosaraju {
     }
 
     /* Dfs utilizado no grafo de componentes fortemente conexos. Uzado para obter a ordem topologica */
-    public void dfsOrdemTopologica(GrafoLista g) {
+    public void dfsOT(GrafoLista g) {
         for (Vertice v : g.getVertices()) {
             if (v.getCor().equals(Vertice.Color.WHITE)) {
-                dfsVisitOrdemTopologica(v);
+                dfsVisitOT(v);
             }
         }
     }
 
     /* visita do dfs de ordem topologica. Usado para construir uma pilha */
-    public void dfsVisitOrdemTopologica(Vertice v) {
+    public void dfsVisitOT(Vertice v) {
         v.setCor(Vertice.Color.GRAY);
 
         for (Vertice adj : v.getAdjacencias()) {
             if (adj.getCor().equals(Vertice.Color.WHITE)) {
-                dfsVisitOrdemTopologica(adj);
+                dfsVisitOT(adj);
             }
         }
 
@@ -183,55 +185,34 @@ public class Kosaraju {
         return this.vertices = stackLista;
     }
 
-    public GrafoLista getComponentesFortementeConectados() {
-        //chamando dfs para o grafo original
-        for (Vertice v : this.grafo.getVertices()) {
-            dfs(v);
-        }
+    public GrafoLista getCFC(GrafoLista gI) {
 
-        GrafoLista gInvertido = getTransposta(this.grafo);
-        for (Vertice v : gInvertido.getVertices()) {
-            v.setCor(Vertice.Color.WHITE);
-        }
-        gInvertido.setVertices(stackNew(gInvertido.getVertices()));
+        ArrayList<Vertice> verticesPretos = new ArrayList<>();
 
-        GrafoLista grafoFc = new GrafoLista();
-        ArrayList<GrafoLista> cFC = new ArrayList<>();
-        //chamando o segundo dfs para o grafo invertido
-        for (Vertice v : gInvertido.getVertices()) {
-            dfsGrafoInvertido(v);
+        for (Vertice v : gI.getVertices()) {
+            dfsGI(v);
             StringBuilder componente = new StringBuilder();
-            GrafoLista gTemp = new GrafoLista();
-            for (Vertice j : gInvertido.getVertices()) {
+
+            for (Vertice j : gI.getVertices()) {
                 if (j.getCor().equals(Vertice.Color.BLACK)) {
                     componente.append(j.getDado());
                     j.setCor(Vertice.Color.GRAY);
-                    gTemp.addVertice(j);
                 }
             }
-            if (!gTemp.getVertices().isEmpty()) {
-                grafoFc.criarEAdicionarVertice(componente.toString());
-                cFC.add(gTemp);
+            if (!componente.toString().equals("")) {
+                Vertice x = new Vertice(componente.toString());
+                verticesPretos.add(x);
             }
         }
-        this.fortementeConectados = cFC;
-        grafoFc.setNumeroDeVertices(cFC.size());
 
-        return grafoFc;
+        GrafoLista gL = new GrafoLista();
+        gL.setNumeroDeVertices(verticesPretos.size());
+        gL.setVertices(verticesPretos);
+        return gL;
     }
 
 
-    public void ehGrafoFortementeConexo(ArrayList<GrafoLista> cFC) {
-        if (cFC.size() != 1) {
-            System.out.println("Não");
-            System.out.println(cFC.size());
-        } else {
-            System.out.println("Sim");
-            System.out.println(cFC.size());
-        }
-    }
-
-    public void adicionarAdjacenciasGrafoFC(GrafoLista grafoFc) {
+    public void addAdjacenciasGrafoFc(GrafoLista grafoFc) {
         //todos devem  ser brancos
         for (Vertice comp : grafoFc.getVertices())
             comp.setCor(Vertice.Color.WHITE);
@@ -255,20 +236,41 @@ public class Kosaraju {
         }
     }
 
+    public void ehGrafoFortementeConexo(GrafoLista grafoFc) {
+        if (grafoFc.getNumeroDeVertices() != 1) {
+            System.out.println("Não");
+            System.out.println(grafoFc.getNumeroDeVertices());
+        } else {
+            System.out.println("Sim");
+            System.out.println(grafoFc.getNumeroDeVertices());
+        }
+    }
+
 
     public void printarOrdemTopologica() {
         while (!this.stackCFC.isEmpty())
             System.out.print(this.stackCFC.pop().getDado() + " ");
-        System.out.println();
     }
 
     public void executarSaida() {
-        GrafoLista grafoFc = getComponentesFortementeConectados();
-        ehGrafoFortementeConexo(this.fortementeConectados);
-        adicionarAdjacenciasGrafoFC(grafoFc);
-        dfsOrdemTopologica(grafoFc);
+        //chamando dfs para o grafo original
+        for (Vertice v : this.grafo.getVertices()) {
+            dfs(v);
+        }
+
+        GrafoLista gI = getTransposta(this.grafo);
+        for (Vertice v : gI.getVertices()) {
+            v.setCor(Vertice.Color.WHITE);
+        }
+        gI.setVertices(stackNew(gI.getVertices()));
+        GrafoLista grafoFc = getCFC(gI);
+
+        ehGrafoFortementeConexo(grafoFc);
+        addAdjacenciasGrafoFc(grafoFc);
+        dfsOT(grafoFc);
 
         printarOrdemTopologica();
+        System.out.println();
         grafoFc.imprimirGrafoLista();
     }
 
